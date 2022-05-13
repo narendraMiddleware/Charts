@@ -21,7 +21,7 @@ export default function App() {
   const [barchartData, setBarchartData] = useState([
 {
 	"Letter": "A",
-	"Freq": 20	
+	"Freq": 20
 },
 {
 	"Letter" : "B",
@@ -125,46 +125,47 @@ const [childRefreshFunction, setChildRefreshFunction] = useState(null);
 const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
 
   useEffect(() => {
-    loadData();
-    scatterplotChart({'a':'a'})
+    // loadData();
+    // scatterplotChart({'a':'a'})
   }, []);
 
   const [chartList, setChartList] = useState([]);
   const [classList, setClassList] = useState([]);
   const [childData, setChildData] = useState("");
-
-  const passURLFunc = (value) => {
-    loadData(value);
+  const passURLFunc = (value, graphType) => {
+    loadData(value, graphType);
   }
 
-  const loadData = (url) => {
+  const loadData = (url, graphType) => {
 
-   
+
     const response = fetch(url);
     response.then( response => {
       const jsonPromise = response.json();
       jsonPromise.then( json => {
         // console.log(json[0]);
         setData(json);
-        const graphType = json[0] ? Object.keys(json[0]).length : 0;
+        // const graphType = json[0] ? Object.keys(json[0]).length : 0;
 
         // scatterplotChart(json);
 
-        HexagonChart(json);
-
-        // if(graphType === 0){
-        //   heatmapChart(json)
-        // } else if(graphType === 1){
-        //   lineChart(json)
-        // } else if(graphType === 3) {
-        //   barChart(json)
-        // } else if(true) {
-        //   donutChart(json);
-        // }
+        if(graphType === "line_chart"){
+            lineChart(json)
+        } else if(graphType === "bar_chart"){
+            barChart(json)
+        } else if(graphType === "donut_chart") {
+            donutChart(json);
+        } else if(graphType === "heat_map") {
+            heatmapChart(json)
+        } else if(graphType === "hexagon") {
+            HexagonChart(json);
+        } else if(graphType === "scatter_plot") {
+            scatterplotChart(json);
+        }
       });
     });
   };
-  
+
   const LineChartComponent = (p) => {
     let tempUID = uuidv4();
     setClassList((classList) => [...classList, tempUID]);
@@ -243,7 +244,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
       { i: <DonutChartComponent json={json} key={chartList.length} /> , x: 10, y: 10, w: 5, h: 10 },
     ]);
   };
-  
+
   const layouts = [
     { i: "a", x: 0, y: 0, w: 4, h: 9, static: false },
   ];
@@ -271,7 +272,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("height", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight);
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("width", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
     window.dispatchEvent(new Event('resize'))
-  } 
+  }
 
 
   const onLayoutChange = (layout, layouts) => {
@@ -289,10 +290,10 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
 
   return (
     <div className="App">
-      <InputFieldComponent passURLFunc = {passURLFunc} />
+      <InputFieldComponent passURLFunc = {passURLFunc}/>
         {/* <RealTimeBarChart /> */}
         {/* <RealTimeBarChart width={600} height={400} /> */}
-        
+
         <ReactGridLayout
         {...settings}
           container spacing={8}
@@ -303,14 +304,14 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
           padding={[10,10]}
           style={{height:'570px'}}
         >
-          
+
           {chartList.map((item, index) => {
             return <div key={index} data-grid={layouts[0]}>
               {item.i ? item.i : item }
           </div>
           })}
         </ReactGridLayout>
-        
+
     </div>
   );
 }
