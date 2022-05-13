@@ -122,7 +122,7 @@ export default function App() {
 ]
 );
 const [childRefreshFunction, setChildRefreshFunction] = useState(null);
-const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
+const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
 
   useEffect(() => {
     // loadData();
@@ -193,7 +193,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
   const HexagonChartComponent = (p) => {
     let tempUID = uuidv4();
     setClassList((classList) => [...classList, tempUID]);
-    return <Hexagons setRefreshFunctionSC={(f) => {setChildRefreshFunctionSC(f);}} data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
+    return <Hexagons setRefreshFunctionSC={(f) => {setChildRefreshFunctionSC([...childRefreshFunctionSC,f]);}} data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
   }
 
   const HexagonChart = json => {
@@ -268,7 +268,9 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState(null);
     // console.log(classList);
     // console.log(document.getElementsByClassName(classList[layouts.i]));
     // childRefreshFunction(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
-    childRefreshFunctionSC(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
+    childRefreshFunctionSC.forEach((func) => {
+      func(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth)();
+    })
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("height", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight);
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("width", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
     window.dispatchEvent(new Event('resize'))
