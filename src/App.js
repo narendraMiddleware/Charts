@@ -208,7 +208,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
   const ScatterplotChartComponent = (p) => {
     let tempUID = uuidv4();
     setClassList((classList) => [...classList, tempUID]);
-    return  <ScatterPlot  data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
+    return  <ScatterPlot setRefreshFunctionSC={(f) => {setChildRefreshFunctionSC([...childRefreshFunctionSC,f]);}} data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
   };
   const scatterplotChart = json => {
       setChartList([
@@ -269,7 +269,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
     // console.log(document.getElementsByClassName(classList[layouts.i]));
     // childRefreshFunction(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
     childRefreshFunctionSC.forEach((func) => {
-      func(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth)();
+      func(document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight,document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);
     })
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("height", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientHeight);
     document.getElementsByClassName(classList[layouts.i])[0].setAttribute("width", document.getElementsByClassName(classList[layouts.i])[0].parentElement.parentElement.clientWidth);

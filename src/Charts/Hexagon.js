@@ -58,7 +58,7 @@ export default class Hexagons extends Component {
   constructor(props) {
     super(props);
     this.state = { hexData: buildHexData(this.props),newwidth : 0 };
-      props.setRefreshFunctionSC((a) => this.refreshMe);
+      props.setRefreshFunctionSC(this.refreshMe);
 
     }
   
