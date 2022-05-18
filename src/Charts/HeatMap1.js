@@ -56,7 +56,7 @@ export default function HeatMap(props) {
             .range([0,width])
             .domain(d3.extent(data, d => {return d.year; }));
 
-            const chart = d3.select('#chart')
+            const chart = d3.select('#heat_map')
               .attr("viewBox", `0 0 ${width} ${height}`);
             const tooltip = d3.select("#tooltip");
           
@@ -128,13 +128,13 @@ export default function HeatMap(props) {
             .style('fill','white')
             .text('Year');
           
-          })
+          }, [])
           
       const [svgWidthHeight, setSvgWidthHeight] = useState({width:627,height:350});
       return(
           
         <div id="main">
-        <svg className={props.classnameCustom} id="chart" height={350} width={588}></svg>
+        <svg className={props.classnameCustom} id="heat_map"/>
           <div id="tooltip">
               <div id="container">
                   <span id="month-span" className="span">Month</span> - 
