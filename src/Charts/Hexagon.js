@@ -25,17 +25,13 @@ function buildHexData(data, cols = 6, rows = 6) {
   const jsonCount = data.data.length;
   const hexes = [];
   let rowCount = jsonCount < 9 ? 2 : 4; 
-  console.log(rowCount,"================");
   let tempCount = 0;
   for (let i = 0; i < rowCount; i++) {
-    console.log(tempCount);
     for (let j = i%2; j < (rowCount < 3 ? jsonCount : jsonCount/2); j+=2 ) {
       tempCount += 1;
-      console.log(tempCount > jsonCount);
       if(tempCount > jsonCount){
         console.log("Stop");
       } else {
-        console.log(jsonCount,"hello",tempCount);
         hexes.push({
           active: data.data[j].status,
           col: j,
@@ -90,7 +86,6 @@ export default class Hexagons extends Component {
           .attr('transform', (d,i) => {
             const cx = (d.col * 20 * 1.75) + (5 % 4 ? r * 1 : r);
             const chartPosition = this.props.data.length < 10 ? 50 : 100;
-            console.log(chartPosition);
             const cy = (d.row * r * 1.75) + (r + chartPosition);
             return `translate(${cx}, ${cy}) rotate(90 0 0)`;
           });
@@ -103,16 +98,16 @@ export default class Hexagons extends Component {
   }
 
   temp(a,b){
-    console.log(this.props.data.length)
     let size = this.props.data.length < 10 ? 227 : 350;
     const svgBox = this.svg.getBoundingClientRect();
     const hexBox = this.hexGroup.node().getBBox();
-    const scale = svgBox.height / size;
-    const centerX = (svgBox.width / 2) - ((hexBox.width * scale) / 2);
+    const scaleX = svgBox.width / size;
+    const scaleY = svgBox.height / size;
+    const centerX = (svgBox.width / 2) - ((hexBox.width * scaleX) / 2);
     this.hexGroup.attr('transform', `matrix(0, 0, 0, 0, ${centerX}, 0)`)
       .transition()
       .duration(transitionDuration)
-        .attr('transform', `matrix(${scale}, 0, 0, ${scale}, ${centerX}, 0)`)
+        .attr('transform', `matrix(${scaleX}, 0, 0, ${scaleY}, ${centerX}, 0)`)
   }
 
   componentDidUpdate() {
