@@ -197,7 +197,6 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
   }
 
   const HexagonChart = json => {
-    console.log(json);
     setChartList([
       ...chartList,
       { i: <HexagonChartComponent json={json} key={chartList.length} /> },

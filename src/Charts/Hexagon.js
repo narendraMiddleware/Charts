@@ -92,7 +92,6 @@ export default class Hexagons extends Component {
 
           this.temp(227);
           // setInterval(() => {
-          //   console.log("SetTimeOut");
           //   this.temp(100 + Math.random());
           // },2000)
   }
