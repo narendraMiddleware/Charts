@@ -6,6 +6,7 @@ import HeatMap from './Charts/HeatMap1';
 import ScatterPlot from './Charts/ScatterPlot';
 import Hexagons from './Charts/Hexagon';
 import DonutChart from "./Charts/DonutChart";
+import Flamegraph from "./Charts/FlameChart";
 import RealTimeBarChart from './Charts/RealTimeBarChart';
 import Header from "./Header";
 import InputFieldComponent from "./InputFieldComponent";
@@ -161,7 +162,9 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
             HexagonChart(json);
         } else if(graphType === "scatter_plot") {
             scatterplotChart(json);
-        }
+        } else if(graphType === "flame_chart") {
+            FlameChart(json);
+      }
       });
     });
   };
@@ -244,6 +247,20 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
     ]);
   };
 
+  const FlameChartComponent = (p) => {
+    let tempUID = uuidv4();
+    setClassList((classList) => [...classList, tempUID]);
+    return <Flamegraph data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} height={550} width={550} />
+  }
+
+  const FlameChart = json => {
+    console.log(json);
+    setChartList([
+      ...chartList,
+      { i: <FlameChartComponent json={json} isStatic={true} key={chartList.length} /> },
+    ]);
+  };
+
   const layouts = [
     { i: "a", x: 0, y: 0, w: 4, h: 9, static: false },
   ];
@@ -307,7 +324,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
         >
 
           {chartList.map((item, index) => {
-            return <div key={index} data-grid={layouts[0]}>
+            return <div key={index} data-grid={{ i: "a", x: 0, y: 0, w: 4, h: 9, static: item.i.props.isStatic ? true : false }}>
               {item.i ? item.i : item }
           </div>
           })}

@@ -36,6 +36,8 @@ function InputFieldComponent(props) {
                        name="gender"/> Hexagon
                 <input defaultChecked={graphType === "scatter_plot"} type="radio" value="scatter_plot"
                        name="gender"/> Scatter Plot
+                <input defaultChecked={graphType === "flame_chart"} type="radio" value="flame_chart"
+                name="gender"/> Flame Chart
             </div>
         </div>
     )
