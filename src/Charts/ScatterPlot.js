@@ -21,13 +21,13 @@ const useResizeObserver = (ref) => {
 
 const ScatterPlot = props => {
   return (
-    <BubbleChart customClassNmae={props.classnameCustom} setRefreshFunctionSC={props.setRefreshFunctionSC}/>
+    <BubbleChart customClassNmae={props.classnameCustom} setRefreshFunctionSC={props.setRefreshFunctionSC} data={props.data} />
   )
 }
 
 export default ScatterPlot;
 
-const SomeChart = ({width, height, className}) => {
+const SomeChart = ({width, height, className,data}) => {
   // const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -42,10 +42,10 @@ const SomeChart = ({width, height, className}) => {
   useEffect(() => {
 
     const svg = select(BubbleChartRef.current)
-    const highestX = Math.max(...InitialData.map(o => o.x));
-    const highestY = Math.max(...InitialData.map(o => o.y));
+    const highestX = Math.max(...data.map(o => o.x));
+    const highestY = Math.max(...data.map(o => o.y));
     let yScale = scaleLinear().domain([highestY, 0]).range([0,height])
-    let xScale = scaleLinear().domain([0, highestX]).range([0,width])
+    let xScale = scaleLinear().domain([5, highestX]).range([0,width])
 
     const xAxis = axisBottom(xScale);
     svg
@@ -61,12 +61,14 @@ const SomeChart = ({width, height, className}) => {
 
 
     svg.selectAll("circle")
-      .data(InitialData)
+      .data(data)
       .join("circle")
-      .attr('r', (d)=>d.r)
+      .attr('r', (d)=>{ console.log(Math.round(d.r + (width / height) + 10)); return d.r })
       .attr('cx', (d, i)=>xScale(d.x))
       .attr('cy', (d, i)=>yScale(d.y))
-      .attr('fill','red')
+      .attr('fill','#414449')
+      .attr('stroke',"#595b60")
+      .attr('stroke-width','2')
   }, [width, height])
 
   return <div ref={wrapperRef} style={{height:"97%" }}>
@@ -77,7 +79,7 @@ const SomeChart = ({width, height, className}) => {
   </div>
 }
 
-const BubbleChart = ({customClassNmae, setRefreshFunctionSC}) => {
+const BubbleChart = ({customClassNmae, setRefreshFunctionSC, data}) => {
   const [height, setHeight] = useState(300);
   const [width, setWidth] = useState(300);
 
@@ -90,5 +92,5 @@ const BubbleChart = ({customClassNmae, setRefreshFunctionSC}) => {
     setRefreshFunctionSC(updateDimensions)
   }, [])
 
-  return <SomeChart className={customClassNmae} width={width} height={height} />
+  return <SomeChart className={customClassNmae} width={width} height={height} data={data} />
 }

@@ -1,0 +1,25 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  svg {
+    font-family: Sans-Serif, Arial;
+  }
+  .line {
+    stroke-width: 2;
+    fill: none;
+  }
+  
+  .axis path {
+    stroke: #36383e;
+    stroke-width: 3px;
+  }
+  
+  .text {
+    font-size: 12px;
+  }
+  
+  .title-text {
+    font-size: 12px;
+  }
+  

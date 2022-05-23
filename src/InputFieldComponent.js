@@ -38,6 +38,8 @@ function InputFieldComponent(props) {
                        name="gender"/> Scatter Plot
                 <input defaultChecked={graphType === "flame_chart"} type="radio" value="flame_chart"
                 name="gender"/> Flame Chart
+                <input defaultChecked={graphType === "multiline_chart"} type="radio" value="multiline_chart"
+                name="gender"/> Multiline Chart
             </div>
         </div>
     )

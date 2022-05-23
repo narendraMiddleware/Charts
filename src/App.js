@@ -7,6 +7,7 @@ import ScatterPlot from './Charts/ScatterPlot';
 import Hexagons from './Charts/Hexagon';
 import DonutChart from "./Charts/DonutChart";
 import Flamegraph from "./Charts/FlameChart";
+import MultiLineChart from "./Charts/MultiLineChart";
 import RealTimeBarChart from './Charts/RealTimeBarChart';
 import Header from "./Header";
 import InputFieldComponent from "./InputFieldComponent";
@@ -164,7 +165,9 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
             scatterplotChart(json);
         } else if(graphType === "flame_chart") {
             FlameChart(json);
-      }
+        } else if(graphType === "multiline_chart") {
+            MultiLineChartFunc(json);
+        }
       });
     });
   };
@@ -210,6 +213,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
   const ScatterplotChartComponent = (p) => {
     let tempUID = uuidv4();
     setClassList((classList) => [...classList, tempUID]);
+    console.log(typeof p.json !== "undefined" ? p.json : data,"-------------",data)
     return  <ScatterPlot setRefreshFunctionSC={(f) => {setChildRefreshFunctionSC([...childRefreshFunctionSC,f]);}} data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
   };
   const scatterplotChart = json => {
@@ -223,7 +227,7 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
   const BarChartComponent = (p) => {
     let tempUID = uuidv4()+'-barChart';
     setClassList((classList) => [...classList, tempUID]);
-    return <BarChart data={barchartData} classnameCustom={tempUID} />
+    return <BarChart data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} />
   };
 
   const barChart = json => {
@@ -258,6 +262,20 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
     setChartList([
       ...chartList,
       { i: <FlameChartComponent json={json} isStatic={true} key={chartList.length} /> },
+    ]);
+  };
+
+  const MultiLineChartComponent = (p) => {
+    let tempUID = uuidv4();
+    setClassList((classList) => [...classList, tempUID]);
+    return <MultiLineChart data={typeof p.json !== "undefined" ? p.json : data} classnameCustom={tempUID} height={320} width={560} />
+  }
+
+  const MultiLineChartFunc = json => {
+    console.log(json);
+    setChartList([
+      ...chartList,
+      { i: <MultiLineChartComponent json={json} isStatic={true} key={chartList.length} /> },
     ]);
   };
 
@@ -303,15 +321,11 @@ const [childRefreshFunctionSC, setChildRefreshFunctionSC] = useState([]);
       layoutChange(layouts);
   }
 
-
-
-
   return (
     <div className="App">
       <InputFieldComponent passURLFunc = {passURLFunc}/>
         {/* <RealTimeBarChart /> */}
         {/* <RealTimeBarChart width={600} height={400} /> */}
-
         <ReactGridLayout
         {...settings}
           container spacing={8}
