@@ -44,8 +44,8 @@ const SomeChart = ({width, height, className,data}) => {
     const svg = select(BubbleChartRef.current)
     const highestX = Math.max(...data.map(o => o.x));
     const highestY = Math.max(...data.map(o => o.y));
-    let yScale = scaleLinear().domain([highestY, 0]).range([0,height])
-    let xScale = scaleLinear().domain([5, highestX]).range([0,width])
+    let yScale = scaleLinear().domain([highestY + 10, 0]).range([0,height])
+    let xScale = scaleLinear().domain([5, highestX + 10]).range([0,width])
 
     const xAxis = axisBottom(xScale);
     svg
@@ -63,7 +63,7 @@ const SomeChart = ({width, height, className,data}) => {
     svg.selectAll("circle")
       .data(data)
       .join("circle")
-      .attr('r', (d)=>{ console.log(Math.round(d.r + (width / height) + 10)); return d.r })
+      .attr('r', (d)=>Math.round((d.r - 5) + ((width + height) / (180 - d.r))))
       .attr('cx', (d, i)=>xScale(d.x))
       .attr('cy', (d, i)=>yScale(d.y))
       .attr('fill','#414449')
@@ -80,14 +80,14 @@ const SomeChart = ({width, height, className,data}) => {
 }
 
 const BubbleChart = ({customClassNmae, setRefreshFunctionSC, data}) => {
-  const [height, setHeight] = useState(300);
-  const [width, setWidth] = useState(300);
+  const [height, setHeight] = useState(350);
+  const [width, setWidth] = useState(590);
 
   const updateDimensions = useCallback((a,b) => {
     setHeight(a);
     setWidth(b);
   },[])
-
+  
   useEffect(() => {
     setRefreshFunctionSC(updateDimensions)
   }, [])

@@ -5,8 +5,8 @@ import './heatmapstyle.css'
 
 export default function HeatMap(props) {
         const {classnameCustom} = props;
-        let [width, setWidth] = useState(400);
-        let [height, setHeight] = useState(300);
+        let [width, setWidth] = useState(590);
+        let [height, setHeight] = useState(350);
         useEffect(() => {
           props.setRefreshFunction((a) => refreshMe);
         }, []);
@@ -48,9 +48,11 @@ export default function HeatMap(props) {
 
           const colorScheme = ["#0868ac", "#43a2ca", "#7bccc4", "#bae4bc", "#fcebb5", "#fe9929", "#d95f0e", "#993404"];
 
-          const yScale = d3.scaleLinear()
-            .range([height,0])
-            .domain([12,0]);
+          // const yScale = d3.scaleLinear()
+          //   .range([height,0])
+          //   .domain([12,0]);
+
+          let yScale = d3.scaleLinear().domain([height + 10, 0]).range([0,height])
           
           const xScale = d3.scaleLinear()
             .range([0,width])
