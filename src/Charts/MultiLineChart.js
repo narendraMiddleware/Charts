@@ -45,6 +45,7 @@ export default class MultiLineChart extends React.Component {
     var parseDate = d3.timeParse("%Y");
     data.forEach(function(d) {
       d.values.forEach(function(d) {
+        console.log(parseDate(d.date),'-------------------------',d.date);
         d.date = parseDate(d.date);
         d.price = +d.price;
       });
